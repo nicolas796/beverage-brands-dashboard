@@ -1,0 +1,54 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# Environment variables (NEVER commit these!)
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Database files (for local development)
+*.db
+*.sqlite
+*.sqlite3
+
+# Build outputs
+/frontend/build/
+dist/
+build/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Render/Deployment
+# (keep render.yaml in git - it has no secrets)

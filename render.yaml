@@ -1,0 +1,73 @@
+# Render.com Deployment Configuration
+# This file configures the beverage brands dashboard for deployment on Render
+
+services:
+  - type: web
+    name: beverage-brands-dashboard
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    # Health check endpoint
+    healthCheckPath: /api/health
+    # Environment variables
+    envVars:
+      # Database - SQLite with persistent disk
+      - key: DATABASE_URL
+        value: sqlite:////app/data/beverage_brands.db
+      
+      # Frontend build path
+      - key: FRONTEND_BUILD_PATH
+        value: /app/frontend/build
+      
+      # API Configuration
+      - key: API_PORT
+        value: 8000
+      
+      # CORS - Will be auto-updated with Render domain after deployment
+      - key: CORS_ORIGINS
+        value: https://your-app-name.onrender.com,https://*.onrender.com
+      
+      # JWT Secret - MUST be changed in production!
+      - key: JWT_SECRET
+        generateValue: true  # Render will generate a random value
+      
+      # RapidAPI Configuration (user must set these)
+      - key: RAPIDAPI_KEY
+        sync: false  # User must manually set this in Render dashboard
+      - key: RAPIDAPI_TIKTOK_HOST
+        value: tiktok-api.p.rapidapi.com
+      - key: RAPIDAPI_INSTAGRAM_HOST
+        value: instagram-looter.p.rapidapi.com
+      
+      # Rate limiting (seconds between API calls)
+      - key: TIKTOK_RATE_LIMIT_DELAY
+        value: 4
+      - key: INSTAGRAM_RATE_LIMIT_DELAY
+        value: 4
+      
+      # Google Sheets Sync (optional - user must set these)
+      - key: GOOGLE_SHEETS_ID
+        sync: false
+      - key: GOOGLE_CREDENTIALS_JSON
+        sync: false
+      
+      # Auto-sync interval (hours, set to 0 to disable)
+      - key: AUTO_SYNC_HOURS
+        value: 6
+      
+      # Node environment for frontend
+      - key: NODE_ENV
+        value: production
+    
+    # Persistent disk for SQLite database
+    disk:
+      name: beverage-data
+      mountPath: /app/data
+      sizeGB: 1
+
+# Optional: PostgreSQL database (paid tier)
+# Uncomment below to use PostgreSQL instead of SQLite
+# databases:
+#   - name: beverage-brands-db
+#     plan: starter  # $7/month
+#     ipAllowList: []
