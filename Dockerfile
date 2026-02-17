@@ -1,11 +1,12 @@
 # Multi-stage build for the web interface
 
 # Stage 1: Build React frontend
-FROM node:18-alpine AS frontend-builder
+FROM node:20-alpine AS frontend-builder
 
 WORKDIR /app/frontend
 COPY frontend/package*.json ./
-RUN npm ci --silent
+# Use npm install instead of npm ci for better error visibility
+RUN npm install --legacy-peer-deps
 COPY frontend/ ./
 RUN npm run build
 
