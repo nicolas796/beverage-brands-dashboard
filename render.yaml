@@ -11,9 +11,9 @@ services:
     healthCheckPath: /api/health
     # Environment variables
     envVars:
-      # Database - SQLite with persistent disk
+      # Database - SQLite (free tier, local filesystem)
       - key: DATABASE_URL
-        value: sqlite:////app/data/beverage_brands.db
+        value: sqlite:///./beverage_brands.db
       
       # Frontend build path
       - key: FRONTEND_BUILD_PATH
@@ -59,13 +59,10 @@ services:
       - key: NODE_ENV
         value: production
     
-    # Persistent disk for SQLite database
-    disk:
-      name: beverage-data
-      mountPath: /app/data
-      sizeGB: 1
+# Note: On free tier, SQLite data persists across deploys but not if service is deleted.
+# For production, upgrade to PostgreSQL (see commented config below)
 
-# Optional: PostgreSQL database (paid tier)
+# Optional: PostgreSQL database (paid tier - $7/month)
 # Uncomment below to use PostgreSQL instead of SQLite
 # databases:
 #   - name: beverage-brands-db
